@@ -137,27 +137,3 @@ class Program
 
 
 }
-//int userSelect;
-//Celipsoid baseobj = new Celipsoid();
-//do
-//{
-//    Console.WriteLine("Enter '0' if you want to work with elipsoid and '1' - with ball");
-//    userSelect = Convert.ToInt32(Console.ReadLine());
-//    if (userSelect == 0)
-//    {
-//        baseobj = new Celipsoid();
-//        baseobj.initb();
-//    }
-//    else if (userSelect == 1)
-//    {
-//        baseobj = new Cball();
-//    }
-//    else
-//    {
-//        return;
-//    }
-//    baseobj.inita();
-//    baseobj.show();
-//    baseobj.size();
-//} while (true);
-//        }
