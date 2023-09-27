@@ -37,8 +37,7 @@ class MovingPoint3D : MovingPoint
     private double a3;
     private double a2;
 
-    public MovingPoint3D(double x0, double y0, double z0, double a1, double a2, double a3)
-        : base(x0, a1)
+    public MovingPoint3D(double x0, double y0, double z0, double a1, double a2, double a3): base(x0, a1)
     {
         this.y0 = y0;
         this.z0 = z0;
