@@ -129,11 +129,6 @@ class Program
                 return;
             }
             baseobj.DisplayCoordinates(t);
-
-
         } while (true);
-
     }
-
-
 }
