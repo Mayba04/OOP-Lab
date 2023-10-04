@@ -64,7 +64,7 @@ class MovingPoint3D : MovingPoint
         this.a3 = a3;
     }
 
-    public override void DisplayCoordinates(double t)
+    public void DisplayCoordinates(double t)
     {
         double x = x0 + a1 * Math.Sin(t);
         double y = y0 + a2 * Math.Cos(t);

@@ -7,33 +7,27 @@ namespace OOP_Lab7
     public partial class Form1 : Form
     {
         Graphics graph;
+
         public Form1()
         {
             InitializeComponent();
             graph = CreateGraphics();
-
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
             DrawGraph();
         }
 
         private void DrawGraph()
         {
             graph.Clear(BackColor);
-            Point buttonLocation = PointToClient(button1.PointToScreen(Point.Empty));
 
-            int width = ClientSize.Width;
-            int height = ClientSize.Height;
+            int width = ClientSize.Width - 50;
+            int height = ClientSize.Height - 50; 
 
-            double scaleX = (width - buttonLocation.X) / (0.9 - 0.2);
-
+            double scaleX = width / (0.9 - 0.2);
             double scaleY = height / (CalculateY(0.9) - CalculateY(0.2));
 
-            Color slateBlue = Color.FromName("SlateBlue");
+            Color blue = Color.Blue;
             float penWidth = 2;
-            Pen pen = new Pen(slateBlue, penWidth);
+            Pen pen = new Pen(blue, penWidth);
 
             double xPrev = 0;
             double yPrev = CalculateY(0.2);
@@ -41,16 +35,61 @@ namespace OOP_Lab7
             for (double x = 0.2; x <= 0.9; x += 0.15)
             {
                 double y = CalculateY(x);
-                int x1 = (int)((xPrev - 0.2) * scaleX);
-                int y1 = (int)((yPrev - CalculateY(0.2)) * scaleY);
-                int x2 = (int)((x - 0.2) * scaleX);
-                int y2 = (int)((y - CalculateY(0.2)) * scaleY);
+                int x1 = (int)((xPrev - 0.2) * scaleX) + 50;
+                int y1 = height - (int)((yPrev - CalculateY(0.2)) * scaleY) - 50; 
+                int x2 = (int)((x - 0.2) * scaleX) + 50; 
+                int y2 = height - (int)((y - CalculateY(0.2)) * scaleY) - 50; 
 
                 graph.DrawLine(pen, x1, y1, x2, y2);
 
                 xPrev = x;
                 yPrev = y;
             }
+
+            Pen axisPen = new Pen(Color.Black, 1);
+            int xOffset = 50; 
+            int yOffset = 50; 
+            int arrowSize = 5; 
+            int rightOffset = 50; 
+
+            graph.DrawLine(axisPen, xOffset, height - yOffset, width + xOffset - rightOffset, height - yOffset);
+            graph.DrawLine(axisPen, xOffset, height - yOffset, xOffset, yOffset); 
+
+            //x
+            graph.DrawLine(axisPen, width + xOffset - rightOffset - arrowSize, height - yOffset - arrowSize, width + xOffset - rightOffset, height - yOffset);
+            graph.DrawLine(axisPen, width + xOffset - rightOffset - arrowSize, height - yOffset + arrowSize, width + xOffset - rightOffset, height - yOffset); 
+
+            //y
+            graph.DrawLine(axisPen, xOffset - arrowSize, yOffset + arrowSize, xOffset, yOffset); 
+            graph.DrawLine(axisPen, xOffset + arrowSize, yOffset + arrowSize, xOffset, yOffset); 
+
+            //x
+            for (int i = 1; i <= 5; i++)
+            {
+                int xPos = xOffset + i * (width - 2 * xOffset - rightOffset) / 5; 
+                graph.DrawLine(axisPen, xPos, height - yOffset - 3, xPos, height - yOffset + 3); 
+                string label = (0.2 + i * 0.15).ToString("F1");
+                graph.DrawString(label, Font, Brushes.Black, xPos - 10, height - yOffset + 5); 
+            }
+
+            for (int i = 1; i <= 5; i++)
+            {
+                int yPos = height - yOffset - i * (height - 2 * yOffset) / 5;
+                graph.DrawLine(axisPen, xOffset - 3, yPos, xOffset + 3, yPos); 
+                if (i != 5)
+                {
+                    string label = (CalculateY(0.2) + i * (CalculateY(0.9) - CalculateY(0.2)) / 5).ToString("F2");
+                    graph.DrawString(label, Font, Brushes.Black, xOffset - 30, yPos - 10); 
+                }
+            }
+
+            string formula = "y = ln(|x + 1|) + 5 / (2x + 3)";
+            graph.DrawString(formula, Font, Brushes.Black, 10, 10);
+
+            string xAxisLabel = "X";
+            string yAxisLabel = "Y";
+            graph.DrawString(xAxisLabel, Font, Brushes.Black, width + xOffset - rightOffset + 10, height - yOffset + 5);
+            graph.DrawString(yAxisLabel, Font, Brushes.Black, xOffset - 20, yOffset - 20);
         }
 
         private double CalculateY(double x)
