@@ -1,30 +1,35 @@
 describe("Login", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/dashboard")
-  })
+    cy.visit("http://localhost:3000/dashboard");
+  });
+
   it("Should try to log in with all users", () => {
     cy.fixture("login-data.json").then((loginData) => {
+      console.log(loginData); //
       loginData.users.forEach((user) => {
-        cy.get("#user-name").type(user.username)
-        cy.get("#password").type(user.password, { log: false })
-        cy.get("#login-button").click()
-        if (user.username === "standard_user") {
-          cy.url().should("include", "/inventory.html")
-          cy.get(".bm-burger-button").click()
-          cy.get("#logout_sidebar_link").click()
+        cy.get('#email').type(user.email); 
+        cy.get('input[name="password"]').type(user.password, { log: false }); 
+        cy.get('button:contains("Sign In")').click(); 
+
+        if (user.expectSuccess) {
+          cy.url().should("include", "/dashboard")
+        
         } else {
-          cy.get(".error")
-            .should("have.length", 3)
-            .then((errorMessage) => {
-              cy.wrap(errorMessage)
-                .last()
-                .invoke("text")
-                .should("be.oneOf", [
-                  "Epic sadface: Sorry, this user has been locked out.",
-                  "Epic sadface: Username and password do not match any user in this service",
-                ])
-            })
+          cy.get('.Toastify__toast--error .Toastify__toast-body').should('be.visible');
+        
+          cy.get('body').then(($body) => {
+            if ($body.find('#email').length) {
+              cy.get('#email').clear()
+            }
+          })
+          
+          cy.get('body').then(($body) => {
+            if ($body.find('input[name="password"]').length) {
+              cy.get('input[name="password"]').clear()
+            }
+          })
         }
+        
       })
     })
   })
