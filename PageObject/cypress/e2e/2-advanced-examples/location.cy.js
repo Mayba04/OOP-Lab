@@ -1,5 +1,8 @@
 import LoginPage from "./pageObjects/LoginPage.js";
+import AddUserPage from "./pageObjects/AddUser.js";
+
 const loginPage = new LoginPage();
+const addUserPage = new AddUserPage();
 
 describe("Login", () => {
  
@@ -16,6 +19,7 @@ describe("Login", () => {
 
         if (user.expectSuccess) {
           cy.url().should("include", "/dashboard");
+          Cypress.env();
         } else {
           loginPage.isErrorToastVisible();
         }
@@ -29,4 +33,24 @@ describe("Login", () => {
       });
     });
   });
+
+  it("Add User", () => {
+    addUserPage.loginAndVisit();
+    addUserPage.visit();
+
+    cy.url().should("include", "/dashboard/addUser");
+  
+    addUserPage.typeFirstName('Oleg')
+               .typeLastName('Olegovich')
+               .typeEmail('email@example.com')
+               .typeRole()
+               .typePhoneNumber('+xx(xxx)xxx-xx-xx')
+               .typePassword('Qassword-123')
+               .typeConfirmPassword('Qassword-123')
+               .clickSubmit();
+
+  });
+
+
+
 });

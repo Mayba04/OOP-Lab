@@ -23,7 +23,7 @@ export default class LoginPage {
       this.emailInput.clear();
       this.passwordInput.clear();
       return this;
-    }
+  }
   
     isErrorToastVisible() {
       this.errorToast.should('be.visible');
