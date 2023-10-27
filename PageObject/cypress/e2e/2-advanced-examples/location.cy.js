@@ -1,8 +1,14 @@
 import LoginPage from "./pageObjects/LoginPage.js";
 import AddUserPage from "./pageObjects/AddUser.js";
+import UserTablePage from "./pageObjects/UserTablePage.js";
+import EditUserPage from "./pageObjects/EditUserPage.js";
+import DeleteUser from "./pageObjects/DeleteUser.js";
 
 const loginPage = new LoginPage();
 const addUserPage = new AddUserPage();
+const userTablePage = new UserTablePage();
+const editUserPage = new EditUserPage();
+const deleteUser = new DeleteUser();
 
 describe("Login", () => {
  
@@ -51,6 +57,23 @@ describe("Login", () => {
 
   });
 
+  it("Edit User", () => {
+    addUserPage.loginAndVisit();
+    userTablePage.visit();
+    userTablePage.clickEditForUser('Oleg');
 
+    editUserPage.setFirstName('Igor');
+    editUserPage.setLastName('Olegovich');
+    editUserPage.setRole('User');
+    editUserPage.setPhoneNumber('+xx(xxx)xxx-xx-xx');
+    editUserPage.clickSave();
+
+  });
+
+  it("Delete User", () => {
+    addUserPage.loginAndVisit();
+    deleteUser.visit();
+    deleteUser.clickDeleteForUser('Igor');
+  });
 
 });
